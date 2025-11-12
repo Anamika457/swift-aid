@@ -74,7 +74,10 @@ flutter:
   assets:
       - assets/first_aid_kit.png
       - assets/cpr2.glb
+      - assets/cpr_final_1.glb
       - assets/cpr_final3.glb
+      - assets/choking.glb
+      - assets/choking1.glb
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'cpr_tutorial.dart'; // ✅ Import your CPR tutorial page
+import 'cpr_tutorial.dart'; 
+import 'choking_tutorial.dart';
 
 class TutorialsScreen extends StatefulWidget {
   const TutorialsScreen({super.key});
@@ -26,7 +27,12 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
       'icon': Icons.air_rounded,
       'iconColor': const Color(0xFFB5D6FF),
       'title': 'Choking',
-      'onTap': null,
+      'onTap': (BuildContext context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ChokingTutorialScreen ()),
+        );
+      },
     },
     {
       'icon': Icons.bloodtype_rounded,
