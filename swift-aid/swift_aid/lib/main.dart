@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'screens/onboarding.dart';
 
 void main() {
@@ -19,7 +18,7 @@ class SwiftAidApp extends StatelessWidget {
         fontFamily: 'Poppins',
         scaffoldBackgroundColor: const Color(0xFFF9FBFD),
       ),
-      home: const SplashScreen(), // Start here, then navigate to onboarding
+      home: const SplashScreen(), 
     );
   }
 }

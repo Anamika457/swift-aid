@@ -86,7 +86,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
     });
   }
 
-  /// 🧹 Clean Markdown text before TTS so it sounds natural
+  /// Clean Markdown text before TTS 
   String _stripMarkdown(String input) {
     var text = input;
 
@@ -119,7 +119,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
     return text;
   }
 
-  /// Split text into manageable chunks for smooth playback
+  /// Split text into chunks for smooth playback
   List<String> _splitIntoChunks(String text) {
     final sentences = text.split(RegExp(r'(?<=[.!?])\s+'));
 
@@ -384,7 +384,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                 ),
                 const SizedBox(width: 10),
 
-                // 🔊 Voice control buttons
+                //Voice control buttons
                 if (_isSpeaking)
                   Row(
                     children: [

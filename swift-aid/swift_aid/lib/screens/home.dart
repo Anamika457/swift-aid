@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'tutorial_main.dart'; // Import your Tutorials screen
-import 'chat.dart'; // Import your chatbot screen
-
+import 'tutorial_main.dart'; 
+import 'chat.dart'; 
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -44,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
 
-                // Tutorials Card (clickable)
+                // Tutorials Card 
                 InkWell(
                   onTap: () {
                     Navigator.push(

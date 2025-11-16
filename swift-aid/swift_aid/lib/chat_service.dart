@@ -4,10 +4,10 @@ import 'package:swift_aid/api.dart';
 class ChatService {
   static const String apiKey = geminiApiKey;
 
-  // 🧠 Keeps conversation history
+  // Keeps conversation history
   final List<Content> _history = [];
 
-  // ✅ Restrict to health and first aid topics
+  // Restrict to health and first aid topics
   bool _isHealthRelated(String input) {
     final lower = input.toLowerCase();
     final allowedKeywords = [
@@ -37,20 +37,20 @@ class ChatService {
   }
 
   Future<String> sendMessage(String userMessage) async {
-    // Combine previous chat for smarter filtering (helps follow-ups)
+    // Combine previous chat for smarter filtering 
     final previousContext = _history.isNotEmpty
         ? _history
             .map(
               (e) => e.parts
                   .map((p) =>
-                      p is TextPart ? p.text : '') // ✅ correct text extraction
+                      p is TextPart ? p.text : '') 
                   .join(' '),
             )
             .join(' ')
         : '';
     final combined = "$previousContext $userMessage";
 
-    // 🩺 Apply filter only for first message, or if conversation clearly unrelated
+    // Apply filter only for first message, or if conversation clearly unrelated
     if (_history.isEmpty && !_isHealthRelated(userMessage)) {
       return "⚠️ Please ask only health or first-aid related questions.";
     } else if (_history.isNotEmpty && !_isHealthRelated(combined)) {
@@ -73,7 +73,7 @@ class ChatService {
 
       final response = await chat.sendMessage(userContent);
 
-      // ✅ Safely extract the bot’s text
+      // extract the bot’s text
       final reply = response.text ??
           response.candidates
               ?.map((c) => c.content.parts
@@ -92,12 +92,11 @@ class ChatService {
 
       return reply;
     } catch (e) {
-      print("🔥 Gemini API error: $e");
+      print("Gemini API error: $e");
       return "Something went wrong while connecting to Gemini. Please check your API key or internet.";
     }
   }
 
-  // Optional: Reset chat manually (for “New Chat” button)
   void resetChat() {
     _history.clear();
   }

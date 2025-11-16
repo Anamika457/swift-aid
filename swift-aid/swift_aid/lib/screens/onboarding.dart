@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home.dart'; // ✅ Import the tutorial page
+import 'home.dart'; 
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -44,7 +44,7 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   const Text(
-                    'AR First-Aid Assistance to help you\nrespond safely in emergencies.',
+                    'First-Aid Assistance to help you\nrespond safely in emergencies.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 15,
@@ -98,7 +98,6 @@ class OnboardingScreen extends StatelessWidget {
                         elevation: 3,
                       ),
                       onPressed: () {
-                        // ✅ Navigate to tutorial page
                         Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
                       },
                       child: const Text(

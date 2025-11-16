@@ -11,7 +11,7 @@ class TutorialsScreen extends StatefulWidget {
 }
 
 class _TutorialsScreenState extends State<TutorialsScreen> {
-  // ✅ All tutorials
+  //tutorials
   final List<Map<String, dynamic>> _tutorials = [
     {
       'icon': Icons.favorite_border_rounded,
@@ -48,7 +48,7 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
     },
   ];
 
-  // ✅ This list updates dynamically when searching
+  // list updates dynamically when searching
   late List<Map<String, dynamic>> _filteredTutorials;
 
   final TextEditingController _searchController = TextEditingController();
@@ -59,7 +59,7 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
     _filteredTutorials = List.from(_tutorials);
   }
 
-  // ✅ Simple search filter
+  //  search filter
   void _filterTutorials(String query) {
     final filtered = _tutorials.where((item) {
       final title = item['title'].toString().toLowerCase();
@@ -89,7 +89,7 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
               ),
               const SizedBox(height: 20),
 
-              // ✅ Search Bar
+              // Search Bar
               Container(
                 height: 50,
                 decoration: BoxDecoration(
@@ -115,7 +115,7 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
               ),
               const SizedBox(height: 25),
 
-              // ✅ Scrollable tutorial list
+              //tutorial list
               Expanded(
                 child: _filteredTutorials.isEmpty
                     ? const Center(

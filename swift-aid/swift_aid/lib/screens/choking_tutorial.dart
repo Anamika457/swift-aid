@@ -385,7 +385,7 @@ class _ChokingTutorialScreenState extends State<ChokingTutorialScreen> {
 
           const SizedBox(height: 20),
 
-          // 🌟 PLAY / PAUSE / RESUME TOGGLE + STOP BUTTON
+          // PLAY / PAUSE / RESUME TOGGLE + STOP BUTTON
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
