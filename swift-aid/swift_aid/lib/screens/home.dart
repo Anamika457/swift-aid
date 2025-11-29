@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
-import 'tutorial_main.dart'; 
-import 'chat.dart'; 
+import 'package:url_launcher/url_launcher.dart';
+import 'tutorial_main.dart';
+import 'chat.dart';
+import 'cam.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  // Function to call emergency number
+  void _callEmergency() async {
+    final Uri callUri = Uri(scheme: 'tel', path: '108');
+    if (await canLaunchUrl(callUri)) {
+      await launchUrl(callUri);
+    } else {
+      debugPrint("Could not launch dialer");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +46,21 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
 
-                // AR Guidance Card
-                const FeatureCard(
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FirstAidCamera(),
+                    ));
+                  },
+                  // AR Guidance Card
+                child: const FeatureCard(
                   icon: Icons.camera_alt_rounded,
                   iconColor: Color(0xFFFF9B9B),
-                  title: 'AR Guidance',
+                  title: 'AI/AR Camera Guidance',
                   subtitle: 'Real-time visual assistance',
-                ),
+                ),),
                 const SizedBox(height: 20),
 
                 // Tutorials Card 
@@ -66,21 +86,56 @@ class HomeScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const ChatPage()),
+                      MaterialPageRoute(builder: (context) => const ChatPage()),
                     );
                   },
                   child: const FeatureCard(
-                  icon: Icons.chat_bubble_outline_rounded,
-                  iconColor: Color(0xFFC5E7C7),
-                  title: 'Chatbot Assistant',
-                  subtitle: 'Instant help and guidance',
+                    icon: Icons.chat_bubble_outline_rounded,
+                    iconColor: Color(0xFFC5E7C7),
+                    title: 'Chatbot Assistant',
+                    subtitle: 'Instant help and guidance',
+                  ),
                 ),
-                 
-                ),
-            
               ],
             ),
+          ),
+        ),
+      ),
+
+      // 🆘 Floating SOS Button
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: GestureDetector(
+        onTap: _callEmergency,
+        child: Container(
+          height: 65,
+          width: 180,
+          decoration: BoxDecoration(
+            color: const Color(0xFFFF5C5C),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.redAccent.withOpacity(0.3),
+                blurRadius: 10,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(Icons.phone_in_talk_rounded,
+                  color: Colors.white, size: 26),
+              SizedBox(width: 8),
+              Text(
+                'SOS - Call 108',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ],
           ),
         ),
       ),
