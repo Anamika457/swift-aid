@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:swift_aid/screens/ar_screens/ar_swelling.dart';
+import 'package:swift_aid/screens/ar_screens/ar_arm_sling.dart';
 import 'package:swift_aid/screens/ar_screens/ar_choking.dart';
 import 'package:swift_aid/screens/ar_screens/ar_cpr.dart';
+import 'package:swift_aid/screens/ar_screens/ar_hand_bleed.dart';
+import 'package:swift_aid/screens/ar_screens/ar_leg_sprain.dart';
+import 'package:swift_aid/screens/ar_screens/ar_nose_bleed.dart';
 
 class ARTutorialsScreen extends StatefulWidget {
   const ARTutorialsScreen({super.key});
@@ -37,25 +40,47 @@ class _TutorialsScreenState extends State<ARTutorialsScreen> {
     {
       'icon': Icons.bloodtype_rounded,
       'iconColor': const Color(0xFFFFB6B6),
-      'title': 'Swelling',
+      'title': 'Nose Bleed',
       'onTap': (BuildContext context) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ARSwellingWidget ()),
+          MaterialPageRoute(builder: (context) => const ARNoseBleedWidget ()),
         );
       },
     },
-    // {
-    //   'icon': Icons.directions_walk_rounded,
-    //   'iconColor': const Color(0xFFD7C8FF),
-    //   'title': 'Ankle Sprain',
-    //   'onTap': (BuildContext context) {
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(builder: (context) => const ARAnkleSprainWidget ()),
-    //     );
-    //   },
-    // },
+    {
+      'icon': Icons.directions_walk_rounded,
+      'iconColor': const Color(0xFFB5D6FF),
+      'title': 'Leg Sprain',
+      'onTap': (BuildContext context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ARLegSprainWidget ()),
+        );
+      },
+    },
+    {
+      'icon': Icons.bloodtype_rounded,
+      'iconColor': const Color(0xFFD7C8FF),
+      'title': 'Hand Bleed',
+      'onTap': (BuildContext context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ARHandBleedWidget ()),
+        );
+      },
+    },
+    {
+      'icon': Icons.front_hand,
+      'iconColor': const Color(0xFFB5D6FF),
+      'title': 'Arm Sling',
+      'onTap': (BuildContext context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ARArmSlingWidget ()),
+        );
+      },
+    },
   ];
 
   late List<Map<String, dynamic>> _filteredTutorials;
@@ -88,7 +113,7 @@ class _TutorialsScreenState extends State<ARTutorialsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'AR Guidance',
+                'AI/AR Guidance',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
@@ -108,7 +133,7 @@ class _TutorialsScreenState extends State<ARTutorialsScreen> {
                   onChanged: _filterTutorials,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Search AR Guidance',
+                    hintText: 'Search AI/AR Guidance',
                     hintStyle: TextStyle(
                       color: Color(0xFF8A94A6),
                       fontSize: 15,

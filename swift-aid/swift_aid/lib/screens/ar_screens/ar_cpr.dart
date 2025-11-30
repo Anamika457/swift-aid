@@ -119,8 +119,8 @@ class _MyARWidgetState extends State<ARcprWidget> {
     // Create the node for your CPR 3D model
     final node = ARNode(
       type: NodeType.localGLTF2,        // Local GLTF model
-      uri: 'assets/cpr/cpr_final_1_0.gltf',  // Model path
-      scale: Vector3(100.0, 100.0, 100.0),   // Scale the model
+      uri: 'assets/cpr/bfddf54e.gltf',  // Model path
+      scale: Vector3(0.1, 0.1, 0.1),   // Scale the model
       rotation: Vector4(1.0, 0.0, 0.0, 3.14159), // Rotate 180 degrees on X-axis
     );
 

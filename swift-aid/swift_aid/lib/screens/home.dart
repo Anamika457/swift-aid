@@ -50,16 +50,16 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
 
-                // AR Guidance Card
                 InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ARTutorialsScreen()),
-                    );
+                          builder: (context) => const FirstAidCamera(),
+                    ));
                   },
-                  child: const FeatureCard(
+                  // AR Guidance Card
+                child: const FeatureCard(
                   icon: Icons.camera_alt_rounded,
                   iconColor: Color(0xFFFF9B9B),
                   title: 'AI/AR Camera Guidance',

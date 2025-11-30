@@ -121,8 +121,8 @@ class _MyARWidgetState extends State<ARChokingWidget> {
     // Create a node that loads a local GLTF model
     final node = ARNode(
       type: NodeType.localGLTF2,          // Local GLTF model type
-      uri: 'assets/choking/cpr2_0.gltf',  // Path to your choking model
-      scale: Vector3(100.0, 100.0, 100.0), // Scaling factor
+      uri: 'assets/choking/f11c09a5.gltf',  // Path to your choking model
+      scale: Vector3(0.1, 0.1, 0.1), // Scaling factor
     );
 
     // Attach the node to the anchor

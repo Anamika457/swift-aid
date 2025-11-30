@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:swift_aid/screens/hand_bleed_tutorial.dart';
+import 'package:swift_aid/screens/leg_sprain_tutorial.dart';
+import 'package:swift_aid/screens/nose_bleed_tutorial.dart';
 import 'cpr_tutorial.dart'; 
 import 'choking_tutorial.dart';
-import 'swelling_tutorial.dart';
+import 'arm_sling_tutorial.dart';
 
 class TutorialsScreen extends StatefulWidget {
   const TutorialsScreen({super.key});
@@ -36,13 +39,46 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
       },
     },
     {
-      'icon': Icons.directions_walk_rounded,
+      'icon': Icons.bloodtype_rounded,
       'iconColor': const Color(0xFFD7C8FF),
-      'title': 'Swelling',
+      'title': 'Bleeding',
       'onTap': (BuildContext context) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const SwellingTutorialScreen ()),
+          MaterialPageRoute(builder: (context) => const HandBleedTutorialScreen ()),
+        );
+      },
+    },
+    {
+      'icon': Icons.directions_walk_rounded,
+      'iconColor': const Color(0xFFFF9B9B),
+      'title': 'Leg Sprain',
+      'onTap': (BuildContext context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LegSprainTutorialScreen ()),
+        );
+      },
+    },
+    {
+      'icon': Icons.bloodtype_rounded,
+      'iconColor': const Color(0xFFB5D6FF),
+      'title': 'Nose Bleed',
+      'onTap': (BuildContext context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NoseBleedTutorialScreen ()),
+        );
+      },
+    },
+    {
+      'icon': Icons.directions_walk_rounded,
+      'iconColor': const Color(0xFFD7C8FF),
+      'title': 'Arm Sling',
+      'onTap': (BuildContext context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ArmSlingTutorialScreen ()),
         );
       },
     },
