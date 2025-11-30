@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:swift_aid/screens/hand_bleed_tutorial.dart';
-import 'package:swift_aid/screens/leg_sprain_tutorial.dart';
-import 'package:swift_aid/screens/nose_bleed_tutorial.dart';
-import 'cpr_tutorial.dart'; 
-import 'choking_tutorial.dart';
-import 'arm_sling_tutorial.dart';
+import 'package:swift_aid/screens/ar_screens/ar_arm_sling.dart';
+import 'package:swift_aid/screens/ar_screens/ar_choking.dart';
+import 'package:swift_aid/screens/ar_screens/ar_cpr.dart';
+import 'package:swift_aid/screens/ar_screens/ar_hand_bleed.dart';
+import 'package:swift_aid/screens/ar_screens/ar_leg_sprain.dart';
+import 'package:swift_aid/screens/ar_screens/ar_nose_bleed.dart';
 
-class TutorialsScreen extends StatefulWidget {
-  const TutorialsScreen({super.key});
+class ARTutorialsScreen extends StatefulWidget {
+  const ARTutorialsScreen({super.key});
 
   @override
-  State<TutorialsScreen> createState() => _TutorialsScreenState();
+  State<ARTutorialsScreen> createState() => _TutorialsScreenState();
 }
 
-class _TutorialsScreenState extends State<TutorialsScreen> {
-  //tutorials
+class _TutorialsScreenState extends State<ARTutorialsScreen> {
   final List<Map<String, dynamic>> _tutorials = [
     {
       'icon': Icons.favorite_border_rounded,
@@ -23,7 +22,7 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
       'onTap': (BuildContext context) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const CPRTutorialScreen()),
+          MaterialPageRoute(builder: (context) => const ARcprWidget()),
         );
       },
     },
@@ -34,57 +33,56 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
       'onTap': (BuildContext context) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ChokingTutorialScreen ()),
+          MaterialPageRoute(builder: (context) => const ARChokingWidget ()),
         );
       },
     },
     {
       'icon': Icons.bloodtype_rounded,
-      'iconColor': const Color(0xFFD7C8FF),
-      'title': 'Bleeding',
-      'onTap': (BuildContext context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HandBleedTutorialScreen ()),
-        );
-      },
-    },
-    {
-      'icon': Icons.directions_walk_rounded,
-      'iconColor': const Color(0xFFFF9B9B),
-      'title': 'Leg Sprain',
-      'onTap': (BuildContext context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const LegSprainTutorialScreen ()),
-        );
-      },
-    },
-    {
-      'icon': Icons.bloodtype_rounded,
-      'iconColor': const Color(0xFFB5D6FF),
+      'iconColor': const Color(0xFFFFB6B6),
       'title': 'Nose Bleed',
       'onTap': (BuildContext context) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const NoseBleedTutorialScreen ()),
+          MaterialPageRoute(builder: (context) => const ARNoseBleedWidget ()),
         );
       },
     },
     {
       'icon': Icons.directions_walk_rounded,
+      'iconColor': const Color(0xFFB5D6FF),
+      'title': 'Leg Sprain',
+      'onTap': (BuildContext context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ARLegSprainWidget ()),
+        );
+      },
+    },
+    {
+      'icon': Icons.bloodtype_rounded,
       'iconColor': const Color(0xFFD7C8FF),
+      'title': 'Hand Bleed',
+      'onTap': (BuildContext context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ARHandBleedWidget ()),
+        );
+      },
+    },
+    {
+      'icon': Icons.front_hand,
+      'iconColor': const Color(0xFFB5D6FF),
       'title': 'Arm Sling',
       'onTap': (BuildContext context) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ArmSlingTutorialScreen ()),
+          MaterialPageRoute(builder: (context) => const ARArmSlingWidget ()),
         );
       },
     },
   ];
 
-  // list updates dynamically when searching
   late List<Map<String, dynamic>> _filteredTutorials;
 
   final TextEditingController _searchController = TextEditingController();
@@ -95,7 +93,6 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
     _filteredTutorials = List.from(_tutorials);
   }
 
-  //  search filter
   void _filterTutorials(String query) {
     final filtered = _tutorials.where((item) {
       final title = item['title'].toString().toLowerCase();
@@ -116,7 +113,7 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Tutorials',
+                'AI/AR Guidance',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
@@ -125,7 +122,6 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Search Bar
               Container(
                 height: 50,
                 decoration: BoxDecoration(
@@ -137,7 +133,7 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
                   onChanged: _filterTutorials,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Search first-aid steps...',
+                    hintText: 'Search AI/AR Guidance',
                     hintStyle: TextStyle(
                       color: Color(0xFF8A94A6),
                       fontSize: 15,
@@ -151,12 +147,11 @@ class _TutorialsScreenState extends State<TutorialsScreen> {
               ),
               const SizedBox(height: 25),
 
-              //tutorial list
               Expanded(
                 child: _filteredTutorials.isEmpty
                     ? const Center(
                         child: Text(
-                          'No tutorials found.',
+                          'No AR Guidance found.',
                           style: TextStyle(
                             color: Color(0xFF8A94A6),
                             fontSize: 15,

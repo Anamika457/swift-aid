@@ -4,14 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
-class SwellingTutorialScreen extends StatefulWidget {
-  const SwellingTutorialScreen({super.key});
+class HandBleedTutorialScreen extends StatefulWidget {
+  const HandBleedTutorialScreen({super.key});
 
   @override
-  State<SwellingTutorialScreen> createState() => _SwellingTutorialScreenState();
+  State<HandBleedTutorialScreen> createState() => _HandBleedTutorialScreenState();
 }
 
-class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
+class _HandBleedTutorialScreenState extends State<HandBleedTutorialScreen> {
   late final WebViewController _controller;
   late FlutterTts flutterTts;
 
@@ -20,37 +20,37 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
 
   bool isSpeaking = false;
   bool isPaused = false;
-
   List<String> _chunks = [];
   int _chunkIndex = 0;
 
   final List<Map<String, String>> _steps = [
-    {
-      "title": "Step 1 of 5",
-      "desc":
-          "Rest the injured area and avoid putting pressure on it"
-    },
-    {
-      "title": "Step 2 of 5",
-      "desc":
-          "Apply an ice pack wrapped in a cloth for 15–20 minutes, repeating every 2–3 hours."
-    },
-    {
-      "title": "Step 3 of 5",
-      "desc":
-          "Use a light compression bandage to support the swelling without making it too tight."
-    },
-    {
-      "title": "Step 4 of 5",
-      "desc":
-          "Elevate the injured part above heart level to reduce swelling."
-    },
-    {
-      "title": "Step 5 of 5",
-      "desc":
-          "Avoid heat or massage during the first 48 hours."
-    },
-  ];
+  {
+    "title": "Step 1 of 5",
+    "desc":
+        "Stay calm and have the person sit. If possible, wash your hands or wear gloves to reduce infection risk."
+  },
+  {
+    "title": "Step 2 of 5",
+    "desc":
+        "Apply firm, direct pressure on the wound using a clean cloth, gauze, or tissue to stop the bleeding."
+  },
+  {
+    "title": "Step 3 of 5",
+    "desc":
+        "Keep applying pressure for several minutes without checking. If blood soaks through, place another cloth on top—do not remove the first one."
+  },
+  {
+    "title": "Step 4 of 5",
+    "desc":
+        "Once bleeding slows, clean around the wound gently with water. Avoid using strong chemicals directly on the wound."
+  },
+  {
+    "title": "Step 5 of 5",
+    "desc":
+        "Cover the wound with a sterile bandage. Seek medical help if the bleeding is heavy, doesn’t stop, or if the cut is deep."
+  },
+];
+
 
   @override
   void initState() {
@@ -105,8 +105,7 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
   }
 
   List<String> _splitIntoChunks(String text) {
-    final parts = text.split(RegExp(r'(?<=[.?!])\s+'));
-    return parts.map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
+    return text.split(RegExp(r'(?<=[.?!])\s+')).map((e) => e.trim()).toList();
   }
 
   Future<void> speakCurrentStep() async {
@@ -145,8 +144,8 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
     }
 
     setState(() {
-      isSpeaking = false;
       isPaused = true;
+      isSpeaking = false;
     });
   }
 
@@ -166,18 +165,18 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
 
   Future<void> stopSpeech() async {
     await flutterTts.stop();
-
     setState(() {
-      isSpeaking = false;
       isPaused = false;
+      isSpeaking = false;
       _chunks = [];
       _chunkIndex = 0;
     });
   }
 
+  // 🔥 FIXED: RESTORED FULL ANIMATION SEQUENCING LIKE CHOKING SCREEN
   Future<void> _loadModelAsHtml() async {
     try {
-      final bytes = await rootBundle.load('assets/swelling.glb');
+      final bytes = await rootBundle.load('assets/hand_bleed.glb');
       final base64Model = base64Encode(
         bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
       );
@@ -190,25 +189,16 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
         <style>
-          html, body {
-            margin: 0;
-            height: 100%;
-            overflow: hidden;
-            background-color: transparent;
-          }
-          model-viewer {
-            width: 100%;
-            height: 100%;
-            border-radius: 20px;
-          }
+          html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
+          model-viewer { width: 100%; height: 100%; border-radius: 20px; }
         </style>
       </head>
       <body>
+
         <model-viewer id="mv"
           src="data:model/gltf-binary;base64,$base64Model"
-          alt="Swelling First Aid 3D Animated Model"
-          auto-rotate
           camera-controls
+          auto-rotate
           exposure="1"
           shadow-intensity="1">
         </model-viewer>
@@ -218,24 +208,25 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
 
           mv.addEventListener('load', async () => {
             await mv.updateComplete;
+
             const animations = mv.availableAnimations || [];
             if (animations.length === 0) return;
 
-            let currentIndex = 0;
-            let isTransitioning = false;
+            let idx = 0;
+            let busy = false;
 
             async function playNext() {
-              if (isTransitioning) return;
-              isTransitioning = true;
+              if (busy) return;
+              busy = true;
 
-              const name = animations[currentIndex];
-              mv.play({ animationName: name, repetitions: 1 });
+              const anim = animations[idx];
+              mv.play({ animationName: anim, repetitions: 1 });
 
               mv.addEventListener('finished', () => {
-                currentIndex = (currentIndex + 1) % animations.length;
+                idx = (idx + 1) % animations.length;
 
                 setTimeout(() => {
-                  isTransitioning = false;
+                  busy = false;
                   playNext();
                 }, 300);
               }, { once: true });
@@ -244,16 +235,15 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
             playNext();
           });
         </script>
+
       </body>
       </html>
       ''';
 
       _controller
-        ..setNavigationDelegate(
-          NavigationDelegate(
-            onPageFinished: (_) => setState(() => _isLoading = false),
-          ),
-        )
+        ..setNavigationDelegate(NavigationDelegate(
+          onPageFinished: (_) => setState(() => _isLoading = false),
+        ))
         ..loadHtmlString(html);
     } catch (e) {
       debugPrint("Model Load Error: $e");
@@ -286,7 +276,6 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.3,
@@ -298,61 +287,41 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
           },
         ),
         title: const Text(
-          'Swelling First Aid',
+          'Bleeding Tutorial',
           style: TextStyle(
             color: Colors.black87,
             fontWeight: FontWeight.w600,
           ),
         ),
-        centerTitle: false,
       ),
 
       body: Column(
         children: [
-          // 3D Model Viewer
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Stack(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.45,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF6FAFF),
-                    borderRadius: BorderRadius.circular(25),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 2,
-                        blurRadius: 6,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.45,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF6FAFF),
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(25),
-                    child: WebViewWidget(controller: _controller),
-                  ),
-                ),
-
-                const Positioned(
-                  right: 16,
-                  top: 14,
-                  child: Text(
-                    '360° View',
-                    style: TextStyle(
-                      color: Color(0xFF8A94A6),
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(25),
+                child: WebViewWidget(controller: _controller),
+              ),
             ),
           ),
 
           const Spacer(),
 
-          // Step Description Box
           Container(
             width: double.infinity,
             margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -363,25 +332,19 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
             ),
             child: Column(
               children: [
-                Text(
-                  current["title"]!,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF1A202C),
-                  ),
-                ),
-
+                Text(current["title"]!,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF1A202C))),
                 const SizedBox(height: 12),
-
                 Text(
                   current["desc"]!,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 15,
-                    color: Color(0xFF6C7A9C),
-                    height: 1.4,
-                  ),
+                      fontSize: 15,
+                      color: Color(0xFF6C7A9C),
+                      height: 1.4),
                 ),
               ],
             ),
@@ -389,7 +352,6 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
 
           const SizedBox(height: 20),
 
-          // PLAY / PAUSE / RESUME TOGGLE + STOP BUTTON
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -409,9 +371,7 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
                   }
                 },
               ),
-
               const SizedBox(width: 20),
-
               IconButton(
                 icon: const Icon(Icons.stop_circle_outlined,
                     size: 45, color: Colors.red),
@@ -420,9 +380,8 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
             ],
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
 
-          // Bottom Navigation Buttons
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Row(
@@ -432,8 +391,8 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
                     onPressed: _previousStep,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey.shade200,
-                      elevation: 0,
                       padding: const EdgeInsets.symmetric(vertical: 14),
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
@@ -441,23 +400,20 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
                     child: const Text(
                       'Previous',
                       style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                      ),
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15),
                     ),
                   ),
                 ),
-
                 const SizedBox(width: 16),
-
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _nextStep,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.redAccent,
-                      elevation: 0,
                       padding: const EdgeInsets.symmetric(vertical: 14),
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
@@ -465,10 +421,9 @@ class _SwellingTutorialScreenState extends State<SwellingTutorialScreen> {
                     child: const Text(
                       'Next',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                      ),
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15),
                     ),
                   ),
                 ),

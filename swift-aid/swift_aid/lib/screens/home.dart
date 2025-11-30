@@ -3,6 +3,10 @@ import 'package:url_launcher/url_launcher.dart';
 import 'tutorial_main.dart';
 import 'chat.dart';
 import 'cam.dart';
+import 'package:swift_aid/screens/ar_main.dart';
+import 'tutorial_main.dart'; // Import your Tutorials screen
+import 'chat.dart'; // Import your chatbot screen
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

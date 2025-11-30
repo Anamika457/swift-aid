@@ -10,6 +10,12 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:swift_aid/api.dart';
+import 'package:swift_aid/screens/ar_screens/ar_arm_sling.dart';
+import 'package:swift_aid/screens/ar_screens/ar_choking.dart';
+import 'package:swift_aid/screens/ar_screens/ar_cpr.dart';
+import 'package:swift_aid/screens/ar_screens/ar_hand_bleed.dart';
+import 'package:swift_aid/screens/ar_screens/ar_leg_sprain.dart';
+import 'package:swift_aid/screens/ar_screens/ar_nose_bleed.dart';
 
 class FirstAidCamera extends StatefulWidget {
   const FirstAidCamera({super.key});
@@ -20,15 +26,10 @@ class FirstAidCamera extends StatefulWidget {
 
 class _FirstAidCameraState extends State<FirstAidCamera>
     with WidgetsBindingObserver {
-  // --------------------------------------------------------
-  // CAMERA
-  // --------------------------------------------------------
+
   CameraController? controller;
   bool cameraReady = false;
 
-  // --------------------------------------------------------
-  // AI RESULT
-  // --------------------------------------------------------
   String result = "Camera initializing… Tap 'Analyze' when ready.";
   bool isApiCallActive = false;
 
@@ -38,9 +39,8 @@ class _FirstAidCameraState extends State<FirstAidCamera>
   DateTime? lastCall;
   final Duration cooldown = const Duration(seconds: 5);
 
-  // --------------------------------------------------------
-  // TTS (robust, no .resume())
-  // --------------------------------------------------------
+  Widget? _pendingARScreen;
+
   final FlutterTts _tts = FlutterTts();
 
   bool _isSpeaking = false;   // true when TTS engine is currently speaking a chunk
@@ -71,6 +71,47 @@ class _FirstAidCameraState extends State<FirstAidCamera>
     controller?.dispose();
     _tts.stop();
     super.dispose();
+  }
+
+  Widget? detectARScreen(String text) {
+    text = text.toLowerCase();
+
+    if (text.contains("arm sling") ||
+        text.contains("broken hand") ||
+        text.contains("fracture") ||
+        text.contains("hand injury")) {
+      return const ARArmSlingWidget();
+    }
+
+    if (text.contains("cpr") ||
+        text.contains("cardiac arrest") ||
+        text.contains("chest compressions")) {
+      return const ARcprWidget();
+    }
+
+    if (text.contains("bleeding") ||
+        text.contains("bleed") ||
+        text.contains("blood")) {
+      return const ARHandBleedWidget();
+    }
+
+    if (text.contains("choking") ||
+        text.contains("airway blockage")) {
+      return const ARChokingWidget();
+    }
+
+    if (text.contains("nose bleed") ||
+    text.contains("nose") ||
+        text.contains("nosebleed")) {
+      return const ARNoseBleedWidget();
+    }
+
+    if (text.contains("sprain") ||
+        text.contains("twisted ankle")) {
+      return const ARLegSprainWidget();
+    }
+
+    return null;
   }
 
   // --------------------------------------------------------
@@ -345,6 +386,7 @@ class _FirstAidCameraState extends State<FirstAidCamera>
       setState(() {
         result = "Capture Error: $e";
         isApiCallActive = false;
+        _pendingARScreen = null;
       });
       return;
     }
@@ -356,6 +398,11 @@ class _FirstAidCameraState extends State<FirstAidCamera>
       final cleaned = cleanMarkdown(raw);
 
       setState(() => result = cleaned);
+
+      final arScreen = detectARScreen(cleaned);
+      if (arScreen != null) {
+        setState(() => _pendingARScreen = arScreen);
+      }
 
       await _speak(cleaned);
 
@@ -606,6 +653,33 @@ class _FirstAidCameraState extends State<FirstAidCamera>
                     ),
 
                     const SizedBox(height: 10),
+
+                    if (_pendingARScreen != null)
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => _pendingARScreen!,
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.redAccent,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                      child: const Text(
+                        "VIEW AR MODEL",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+
 
                     // recapture
                     ElevatedButton(
